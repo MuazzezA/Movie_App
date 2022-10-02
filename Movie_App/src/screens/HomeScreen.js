@@ -6,8 +6,6 @@ import Icon from 'react-native-vector-icons/Feather';
 
 export default function HomeScreen() {
 
-    
-
     const temp = [
         {
         "i":{
@@ -27,11 +25,12 @@ export default function HomeScreen() {
     const movieContainer = ({item}) => {
         
     return(
+
         <View style={styles.container}>
             
             <Text style={styles.title}>{item.l}</Text>
             <Text style={styles.subtitle}>{item.s}</Text>
-                
+    
             <Image
                 style={styles.poster}
                 source={{
@@ -44,48 +43,46 @@ export default function HomeScreen() {
     }
     
 
+    const searchMovie = () => {
+
+        console.log("Search button pressed" + search);
+        const options = {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': 'c8b647e608mshed7438edd4a66fap1224cbjsn00fc99f79b87',
+                'X-RapidAPI-Host': 'imdb8.p.rapidapi.com'
+            }
+        };
+        
+        fetch(`https://imdb8.p.rapidapi.com/auto-complete?q=${search}`, options)
+            .then(response => response.json())
+            .then(data => {
+                
+                setlist(data.d);
+
+            }).catch(err => console.error(err));
+    }
+
     return(
         <SafeAreaView
             style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center'}}
         >
         <View style={{flex:1}}>
                 <View style={{flexDirection:"row", justifyContent:"center", alignContent:"center", marginVertical:15}}>
-                    <TextInput style={styles.input}>
+                    <TextInput style={styles.input}
+                        onChangeText={(input) => {setSearch(input)}}
+                    />
 
-                    </TextInput>
                     <TouchableOpacity
                         style={{justifyContent:"center", alignContent:"center"}}
                         onPress={
-                            (input) => {
-                                setSearch(input);
-                                console.log("Search button pressed" + search);
-                                const options = {
-                                    method: 'GET',
-                                    headers: {
-                                        'X-RapidAPI-Key': 'c8b647e608mshed7438edd4a66fap1224cbjsn00fc99f79b87',
-                                        'X-RapidAPI-Host': 'imdb8.p.rapidapi.com'
-                                    }
-                                };
-                                
-                                fetch(`https://imdb8.p.rapidapi.com/auto-complete?q=${search}`, options)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        
-                                        setlist(data.d);
-                                        
-                                        // list.map((item) => {
-                                        //     const name = item.l;
-                                        //     const poster = item.i.imageUrl;
-                                        //     const movie = '<li><img src="' + poster + '" alt="' + name + '"></li>';
-                                        // })
-                                    }).catch(err => console.error(err));
-
-
-                                
+                            () => {
+                               
+                                searchMovie();
+   
                             }
                         }
                     >
-                        {/* <Text style={styles.button}>Search</Text> */}
                         <Icon name="search" size={20} style={{marginLeft:10}}/>
                     </TouchableOpacity>
 
@@ -119,24 +116,25 @@ const styles = StyleSheet.create({
     },
     container: {
         alignItems: 'center',
-        height:350,
+        height: 350,
         width: 320,
         borderWidth: 1,
         padding: 10,
-        margin:15,
+        margin: 15,
         borderRadius: 20,
-        borderColor: 'black',
-        backgroundColor: 'grey',
+        borderColor: '#576F72',
+        backgroundColor: '#7D9D9C',
     },
     poster:{
         alignItems: 'center',
-        height:250,
-        width: 250,
-        margin:15,
+        width: 250, 
+        height: 250,
+        resizeMode: 'contain',
+        margin: 15,
     },
     title:{
         fontSize: 20,
         fontWeight: 'bold',
     },
-    
+ 
 });
