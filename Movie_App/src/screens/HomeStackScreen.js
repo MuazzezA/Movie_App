@@ -1,27 +1,29 @@
-import React from 'react';
-import HomeScreen from './HomeScreen';
+import React from "react";
+import HomeScreen from "./HomeScreen";
+import MovieDetailScreen from "./MovieDetailScreen";
 
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const HomeStack = createNativeStackNavigator();
 
-
-
 export default function HomeStackScreen() {
-
-    return(
-
+  return (
     <HomeStack.Navigator
-        screenOptions={{
-            contentStyle:{
-            backgroundColor:'#F0EBE3'
-            }
-        }}
-    >
-        <HomeStack.Screen name="Home" component={HomeScreen} options={{headerShown:false}}/>
+      screenOptions={{
+        contentStyle: {
+          backgroundColor: "#F0EBE3",
+        },
+      }}>
+      <HomeStack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="MovieDetail"
+        component={MovieDetailScreen}
+        options={{ headerShown: false }}
+      />
     </HomeStack.Navigator>
-
-    );
-
+  );
 }
