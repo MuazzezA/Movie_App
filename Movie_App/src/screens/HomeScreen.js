@@ -16,6 +16,7 @@ import fetchSeachMovie from "../services/fetch_seachMovie";
 export default function HomeScreen({ navigation }) {
   const noData = [
     {
+      id: "1",
       i: {
         height: 1500,
         imageUrl: "./../assets/No_data-cuate.png",
@@ -28,6 +29,7 @@ export default function HomeScreen({ navigation }) {
 
   const noSearch = [
     {
+      id: "1",
       i: {
         height: 1500,
         imageUrl: "./../assets/Search_engines-cuate.png",
@@ -65,12 +67,14 @@ export default function HomeScreen({ navigation }) {
       return (
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("MovieDetail");
+            navigation.navigate("MovieDetail", { movie: item });
           }}>
           <View style={styles.container}>
             <Text style={styles.title}>{item.l}</Text>
             <Text style={styles.subtitle}>{item.s}</Text>
+
             <Image
+              flex={1}
               style={styles.poster}
               source={{
                 uri: item.i.imageUrl,
@@ -169,20 +173,20 @@ const styles = StyleSheet.create({
   container: {
     alignItems: "center",
     height: 350,
-    width: 320,
+    width: 300,
     borderWidth: 1,
     padding: 10,
-    margin: 15,
+    marginVertical: 15,
     borderRadius: 20,
     borderColor: "#576F72",
     backgroundColor: "#E4DCCF",
   },
   poster: {
     alignItems: "center",
-    width: 250,
     height: 250,
+    width: 230,
     resizeMode: "contain",
-    margin: 15,
+    margin: 10,
   },
   title: {
     fontSize: 20,
