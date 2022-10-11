@@ -11,21 +11,9 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
+import fetchSeachMovie from "../services/fetch_seachMovie";
 
 export default function HomeScreen({ navigation }) {
-  const temp = [
-    {
-      i: {
-        height: 1500,
-        imageUrl: "https://m.media-amazon.com/images/I/314t8YNB69L.png",
-        width: 1013,
-      },
-      id: "/trailers",
-      l: "IMDb Trailers",
-      s: "Recent and Popular Trailers",
-    },
-  ];
-
   const noData = [
     {
       i: {
@@ -45,13 +33,13 @@ export default function HomeScreen({ navigation }) {
         imageUrl: "./../assets/Search_engines-cuate.png",
         width: 1013,
       },
-      l: "I dont Found Data For Search",
+      l: "Please Search Movie",
       s: "",
     },
   ];
 
   const [search, setSearch] = useState("");
-  const [movieList, setlist] = useState([]);
+  const [movieList, setMoviesList] = useState(noSearch);
   const [dataCode, setDataCode] = useState(2);
   // 0- no data found
   // 1- data found
@@ -60,13 +48,17 @@ export default function HomeScreen({ navigation }) {
   const movieContainer = ({ item }) => {
     if (dataCode == 0) {
       return (
-        <View style={styles.container}>
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            height: 350,
+            width: 350,
+          }}>
           <ImageBackground
             source={require("./../assets/No_data-cuate.png")}
-            style={styles.image}>
-            <Text style={styles.title}>{item.l}</Text>
-            <Text style={styles.subtitle}>{item.s}</Text>
-          </ImageBackground>
+            style={{ height: 300, width: 300 }}></ImageBackground>
         </View>
       );
     } else if (dataCode == 1) {
@@ -105,34 +97,20 @@ export default function HomeScreen({ navigation }) {
     }
   };
 
-  const searchMovie = () => {
-    console.log("Search button pressed" + search);
-    const options = {
-      method: "GET",
-      headers: {
-        "X-RapidAPI-Key": "c8b647e608mshed7438edd4a66fap1224cbjsn00fc99f79b87",
-        "X-RapidAPI-Host": "imdb8.p.rapidapi.com",
-      },
-    };
-
+  const searchMovie = async () => {
     if (search == "") {
       setDataCode(2);
-      setlist(noSearch);
+      setMoviesList(noSearch);
     } else {
-      fetch(`https://imdb8.p.rapidapi.com/auto-complete?q=${search}`, options)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.d != null) {
-            console.log("Data Found");
-            setDataCode(1);
-            setlist(data.d);
-          } else if (data.d == null) {
-            console.log("No Data Found");
-            setDataCode(0);
-            setlist(noData);
-          }
-        })
-        .catch((err) => console.error(err));
+      const data = await fetchSeachMovie({ search });
+
+      if (data.d == "") {
+        setDataCode(0);
+        setMoviesList(noData);
+      } else if (data.d != "") {
+        setDataCode(1);
+        setMoviesList(data.d);
+      }
     }
   };
 
@@ -197,7 +175,7 @@ const styles = StyleSheet.create({
     margin: 15,
     borderRadius: 20,
     borderColor: "#576F72",
-    backgroundColor: "#7D9D9C",
+    backgroundColor: "#E4DCCF",
   },
   poster: {
     alignItems: "center",
