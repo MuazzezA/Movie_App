@@ -11,37 +11,15 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Icon from "react-native-vector-icons/Feather";
+
 import fetchSeachMovie from "../services/fetch_seachMovie";
+import SearchData from "../components/SearchData";
+import NoData from "../components/NoData";
+import { noData, noSearch } from "../screens/datas";
 
 export default function HomeScreen({ navigation }) {
-  const noData = [
-    {
-      id: "1",
-      i: {
-        height: 1500,
-        imageUrl: "./../assets/No_data-cuate.png",
-        width: 1013,
-      },
-      l: "I dont Found Data For Search",
-      s: "",
-    },
-  ];
-
-  const noSearch = [
-    {
-      id: "1",
-      i: {
-        height: 1500,
-        imageUrl: "./../assets/Search_engines-cuate.png",
-        width: 1013,
-      },
-      l: "Please Search Movie",
-      s: "",
-    },
-  ];
-
   const [search, setSearch] = useState("");
-  const [movieList, setMoviesList] = useState(noSearch);
+  const [movieList, setMoviesList] = useState(noData);
   const [dataCode, setDataCode] = useState(2);
   // 0- no data found
   // 1- data found
@@ -49,56 +27,34 @@ export default function HomeScreen({ navigation }) {
 
   const movieContainer = ({ item }) => {
     if (dataCode == 0) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 350,
-            width: 350,
-          }}>
-          <ImageBackground
-            source={require("./../assets/No_data-cuate.png")}
-            style={{ height: 300, width: 300 }}></ImageBackground>
-        </View>
-      );
+      return <NoData />;
     } else if (dataCode == 1) {
       return (
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("MovieDetail", { movie: item });
-          }}>
-          <View style={styles.container}>
-            <Text style={styles.title}>{item.l}</Text>
-            <Text style={styles.subtitle}>{item.s}</Text>
-
-            <Image
-              flex={1}
-              style={styles.poster}
-              source={{
-                uri: item.i.imageUrl,
-              }}
-            />
-          </View>
-        </TouchableOpacity>
-      );
-    } else if (dataCode == 2) {
-      return (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            height: 350,
-            width: 350,
-          }}>
-          <ImageBackground
-            source={require("./../assets/Search_engines-cuate.png")}
-            style={{ height: 300, width: 300 }}></ImageBackground>
+        <View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("MovieDetail", { movie: item });
+            }}>
+            <View style={styles.container}>
+              <Text style={styles.title}>{item.l}</Text>
+              <Text style={styles.subtitle}>{item.s}</Text>
+              <Image
+                flex={1}
+                style={styles.poster}
+                source={{
+                  uri: item.hasOwnProperty("i")
+                    ? item.i.imageUrl
+                    : "https://vectorified.com/images/no-data-icon-10.png",
+                }}
+              />
+            </View>
+          </TouchableOpacity>
         </View>
       );
+    } else if (dataCode == 2) {
+      return <SearchData />;
     }
+    return <View />;
   };
 
   const searchMovie = async () => {
@@ -107,7 +63,6 @@ export default function HomeScreen({ navigation }) {
       setMoviesList(noSearch);
     } else {
       const data = await fetchSeachMovie({ search });
-
       if (data.d == "") {
         setDataCode(0);
         setMoviesList(noData);
@@ -135,16 +90,12 @@ export default function HomeScreen({ navigation }) {
           }}>
           <TextInput
             style={styles.input}
-            onChangeText={(input) => {
-              setSearch(input);
-            }}
+            onChangeText={(input) => setSearch(input)}
           />
 
           <TouchableOpacity
             style={{ justifyContent: "center", alignContent: "center" }}
-            onPress={() => {
-              searchMovie();
-            }}>
+            onPress={() => searchMovie()}>
             <Icon name="search" size={20} style={{ marginLeft: 10 }} />
           </TouchableOpacity>
         </View>
