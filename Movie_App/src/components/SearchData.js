@@ -1,5 +1,5 @@
 import React from "react";
-import { View, ImageBackground } from "react-native";
+import { View, ImageBackground, Text } from "react-native";
 
 const SearchData = () => {
   return (
@@ -14,6 +14,7 @@ const SearchData = () => {
       <ImageBackground
         source={require("./../assets/Search_engines-cuate.png")}
         style={{ height: 300, width: 300 }}></ImageBackground>
+      <Text>Let's Start Looking For Something</Text>
     </View>
   );
 };
