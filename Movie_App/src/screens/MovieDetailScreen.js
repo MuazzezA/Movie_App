@@ -1,10 +1,19 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Icon from "react-native-vector-icons/Feather";
+import FavoriteButton from "../components/FavoriteButton";
 
 export default function MovieDetailScreen({ route }) {
   const { movie } = route.params;
+
+  const images = [
+    {
+      url: movie.i.imageUrl,
+    },
+    {
+      url: "https://vectorified.com/images/no-data-icon-10.png",
+    },
+  ];
 
   return (
     <SafeAreaView
@@ -12,46 +21,33 @@ export default function MovieDetailScreen({ route }) {
         flex: 1,
         justifyContent: "space-between",
       }}>
+      <Image
+        style={styles.poster}
+        source={{
+          uri: movie.hasOwnProperty("i") ? images[0].url : images[1].url,
+        }}
+      />
       <View style={{ flex: 1 }}>
         <View style={styles.header}>
           <View style={{ flexDirection: "column", flex: 1 }}>
             <Text style={styles.title}>{movie.l}</Text>
             <Text style={styles.subtitle}>{movie.s}</Text>
           </View>
-          <Icon name="heart" size={22} style={{ padding: 5 }} />
+          <FavoriteButton />
         </View>
-
-        <Image
-          style={styles.poster}
-          source={{
-            uri: movie.hasOwnProperty("i")
-              ? movie.i.imageUrl
-              : "https://vectorified.com/images/no-data-icon-10.png",
-          }}
-        />
       </View>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    height: 350,
-    width: 300,
-    borderWidth: 1,
-    padding: 10,
-    marginVertical: 15,
-    borderRadius: 20,
-    borderColor: "#576F72",
-    backgroundColor: "#E4DCCF",
-  },
   poster: {
     alignItems: "center",
     height: 320,
     width: "100%",
     resizeMode: "contain",
     padding: 10,
-    backgroundColor: "black",
+    backgroundColor: "#DFD3C3",
   },
   title: {
     fontSize: 20,
@@ -62,7 +58,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     height: 75,
     width: "100%",
-    backgroundColor: "#b4fCCF",
+    backgroundColor: "#DBC8AC",
     padding: 10,
   },
 });
