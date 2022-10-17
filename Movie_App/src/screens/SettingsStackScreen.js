@@ -1,6 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
-
+import SettingScreen from "./SettingScreen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 const Stack = createNativeStackNavigator();
@@ -14,18 +13,10 @@ export default function SettingsStackScreen() {
         },
       }}>
       <Stack.Screen
-        name="Home"
-        component={HomeScreen1}
+        name="SettingScreen"
+        component={SettingScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
-  );
-}
-
-function HomeScreen1() {
-  return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <Text>Settings!</Text>
-    </View>
   );
 }
