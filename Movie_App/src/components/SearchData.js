@@ -12,7 +12,7 @@ const SearchData = () => {
         width: 350,
       }}>
       <ImageBackground
-        source={require("./../assets/Search_engines-cuate.png")}
+        source={require("./../assets/icons/Search_engines-cuate.png")}
         style={{ height: 300, width: 300 }}></ImageBackground>
       <Text>Let's Start Looking For Something</Text>
     </View>

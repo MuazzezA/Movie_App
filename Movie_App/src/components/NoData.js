@@ -11,7 +11,7 @@ const NoData = () => {
         width: 350,
       }}>
       <ImageBackground
-        source={require("./../assets/No_data-cuate.png")}
+        source={require("./../assets/icons/No_data-cuate.png")}
         style={{ height: 300, width: 300 }}></ImageBackground>
       <Text>Are You Sure? We Couldn't Find Anything About It</Text>
       <Text>Please Try Again</Text>
